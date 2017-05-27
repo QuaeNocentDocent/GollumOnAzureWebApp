@@ -1,0 +1,28 @@
+FROM ruby
+RUN apt-get -y update && apt-get -y install libicu-dev cmake && rm -rf /var/lib/apt/lists/*
+RUN gem install github-linguist
+RUN gem install gollum
+RUN gem install org-ruby  # optional
+
+#here we must use a file share
+RUN mkdir /wiki
+RUN git init /wiki
+WORKDIR /wiki
+
+# ------------------------
+# SSH Server support
+# ------------------------
+RUN apt-get update \ 
+  && apt-get install -y --no-install-recommends openssh-server \
+  && echo "root:Docker!" | chpasswd
+
+COPY sshd_config /etc/ssh/
+COPY init_container.sh /bin/
+
+RUN chmod 755 /bin/init_container.sh 
+CMD ["/bin/init_container.sh"]
+
+
+EXPOSE 2222 80
+
+CMD ["gollum", "--port", "80"]
