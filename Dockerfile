@@ -4,16 +4,23 @@ LABEL MAINTAINER daniele.grandni@live.it
 ENV PORT=80
 ENV SHARE="azurefsshare"
 ENV SHAREPWD="azurefssharekey"
+ENV SHAREACCT="azurestorageaccountname"
 ENV GOLLUMCONF=""
 
-RUN apt-get -y update && apt-get -y install libicu-dev cmake && rm -rf /var/lib/apt/lists/*
-RUN gem install github-linguist
-RUN gem install gollum
-RUN gem install org-ruby  # optional
+#Gollum prereq layer
+RUN apt-get -y update && apt-get -y --fix-missing install libicu-dev cmake build-essential make ruby-dev libicu-dev zlib1g-dev \
+  && rm -rf /var/lib/apt/lists/* \
+  && gem install bundler \
+  && bundle install
+
+#RUN gem install github-linguist
+#RUN gem install gollum
+#RUN gem install org-ruby  # optional
 
 #here we must use a file share
-RUN mkdir /wiki
-RUN git init /wiki
+RUN apt-get install cifs-utils \
+  && mkdir /wiki \
+  && git init /wiki
 
 #WORKDIR /wiki
 
