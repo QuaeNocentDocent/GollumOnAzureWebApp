@@ -25,7 +25,7 @@ RUN apt-get -qq update \
 
 #here we must use a file share
 RUN apt-get -qq update \ 
-  && apt-get install cifs-utils \
+  && apt-get -y install cifs-utils \
   && mkdir /wiki \
   && git init /wiki
 
