@@ -8,10 +8,16 @@ ENV SHAREACCT="azurestorageaccountname"
 ENV GOLLUMCONF=""
 
 #Gollum prereq layer
-RUN apt-get -y update && apt-get -y --fix-missing install libicu-dev cmake build-essential make ruby-dev libicu-dev zlib1g-dev \
+RUN apt-get -qq update \
+  && apt-get -y --fix-missing install libicu-dev cmake build-essential make ruby-dev libicu-dev zlib1g-dev \
   && rm -rf /var/lib/apt/lists/* \
-  && gem install bundler \
-  && bundle install
+  && gem install bundler 
+
+#Gollum binaries, but this is not what I want for scale out ??
+#RUN git clone https://github.com/gollum/gollum /gollum
+#WORKDIR /gollum
+#RUN git checkout -b 5.x origin/5.x \
+#  && bundle install
 
 #RUN gem install github-linguist
 #RUN gem install gollum
