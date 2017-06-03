@@ -24,7 +24,8 @@ RUN apt-get -qq update \
 #RUN gem install org-ruby  # optional
 
 #here we must use a file share
-RUN apt-get install cifs-utils \
+RUN apt-get -qq update \ 
+  && apt-get install cifs-utils \
   && mkdir /wiki \
   && git init /wiki
 
@@ -33,7 +34,7 @@ RUN apt-get install cifs-utils \
 # ------------------------
 # SSH Server support
 # ------------------------
-RUN apt-get update \ 
+RUN apt-get -qq update \ 
   && apt-get install -y --no-install-recommends openssh-server \
   && echo "root:Docker!" | chpasswd
 
