@@ -16,4 +16,4 @@ git checkout -b 5.x origin/5.x
 echo "About to urn bundle install" >> /home/LogFiles/dode_$WEBSITE_RE_INSTANCE_ID_out.log
 bundle install
 
-/home/gollum/bin/gollum --port 80 /wiki
+/home/gollum/bin/gollum --port $PORT /wiki
