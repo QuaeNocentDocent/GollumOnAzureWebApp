@@ -2,9 +2,12 @@ FROM ruby
 
 LABEL MAINTAINER daniele.grandni@live.it
 ENV PORT=80
-ENV SHARE="azurefsshare"
-ENV SHAREPWD="azurefssharekey"
-ENV SHAREACCT="azurestorageaccountname"
+
+# Accessing Azure File Share is not yet supported as any other external storage commenting out the relevant code
+#ENV SHARE="azurefsshare"
+#ENV SHAREPWD="azurefssharekey"
+#ENV SHAREACCT="azurestorageaccountname"
+
 ENV GOLLUMCONF=""
 
 #Gollum prereq layer
@@ -13,23 +16,29 @@ RUN apt-get -qq update \
   && rm -rf /var/lib/apt/lists/* \
   && gem install bundler 
 
-#Gollum binaries, but this is not what I want for scale out ??
-#RUN git clone https://github.com/gollum/gollum /gollum
-#WORKDIR /gollum
-#RUN git checkout -b 5.x origin/5.x \
-#  && bundle install
+#Gollum binaries from branch 5.x
+RUN git clone https://github.com/gollum/gollum /gollum
+WORKDIR /gollum
+RUN git checkout -b 5.x origin/5.x \
+  && bundle install
 
 #RUN gem install github-linguist
 #RUN gem install gollum
 #RUN gem install org-ruby  # optional
 
 #here we must use a file share
-RUN apt-get -qq update \ 
-  && apt-get -y install cifs-utils \
-  && mkdir /wiki \
-  && git init /wiki
+RUN apt-get -qq update #\ 
+  #&& apt-get -y install cifs-utils \
+  #&& mkdir /wiki \
+  #&& git init /wiki
 
 #WORKDIR /wiki
+
+# ------------------------
+# blobxfer support
+# ------------------------
+RUN apt-get install -y build-essential libssl-dev libffi-dev libpython-dev python-dev python-pip \
+  && pip install --upgrade blobxfer
 
 # ------------------------
 # SSH Server support
@@ -39,6 +48,10 @@ RUN apt-get -qq update \
   && echo "root:Docker!" | chpasswd
 
 COPY sshd_config /etc/ssh/
+
+# ------------------------
+# Init container
+# ------------------------
 COPY init_container.sh /bin/
 
 RUN chmod 755 /bin/init_container.sh 
