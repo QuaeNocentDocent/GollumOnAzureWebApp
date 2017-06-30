@@ -1,5 +1,6 @@
 #!/bin/bash
-#uwf allow 2222
+# ver check 0630
+
 service ssh start
 touch /home/LogFiles/node_$WEBSITE_ROLE_INSTANCE_ID_out.log
 echo "$(date) Container started" >> /home/LogFiles/node_$WEBSITE_ROLE_INSTANCE_ID_out.log
@@ -22,6 +23,6 @@ echo "$(env)" >> /home/LogFiles/node_$WEBSITE_ROLE_INSTANCE_ID_out.log
 mkdir /home/wiki
 git init /home/wiki
 
-#TODO if GOLLUMCONF copy the conf file and start gollum with --config /var/www/yourwiki/config.rb
+#TODO if GOLLUMCONF copy the conf file and start gollum with --config /var/www/yourwiki/config.rb copy the config file from a storage account using azure cli2
 
-/home/gollum/bin/gollum --port $PORT /home/wiki
+/gollum/bin/gollum --port $PORT /home/wiki

@@ -8,6 +8,8 @@ ENV PORT=80
 #ENV SHAREPWD="azurefssharekey"
 #ENV SHAREACCT="azurestorageaccountname"
 
+ENV AZURE_STORAGE_KEY=""
+ENV AZURE_STORAGE_URL=""
 ENV GOLLUMCONF=""
 
 #Gollum prereq layer
@@ -27,7 +29,7 @@ RUN git checkout -b 5.x origin/5.x \
 #RUN gem install org-ruby  # optional
 
 #here we must use a file share
-RUN apt-get -qq update #\ 
+#RUN apt-get -qq update \ 
   #&& apt-get -y install cifs-utils \
   #&& mkdir /wiki \
   #&& git init /wiki
@@ -35,10 +37,14 @@ RUN apt-get -qq update #\
 #WORKDIR /wiki
 
 # ------------------------
-# blobxfer support
+# Azure cli2 support
 # ------------------------
-RUN apt-get install -y build-essential libssl-dev libffi-dev libpython-dev python-dev python-pip \
-  && pip install --upgrade blobxfer
+
+RUN  echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | tee /etc/apt/sources.list.d/azure-cli.list \
+  && apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893 \
+  && apt-get install -y apt-transport-https \
+  && apt-get update -qq \
+  && apt-get install -y azure-cli
 
 # ------------------------
 # SSH Server support
