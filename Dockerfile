@@ -67,12 +67,13 @@ RUN chmod 0644 /etc/cron.daily/save_wiki
 # ------------------------
 # Init container
 # ------------------------
-COPY init_container.sh /usr/bin/
+#COPY init_container.sh /usr/bin/
 COPY init_container.py /usr/bin/
 
-RUN chmod 755 /usr/bin/init_container.sh 
+#RUN chmod 755 /usr/bin/init_container.sh 
+RUN chmod 755 /usr/bin/init_container.py 
 EXPOSE 2222 $PORT
 
-CMD ["python /usr/bin/init_container.py"]
+CMD ["/usr/bin/init_container.py"]
 
 
