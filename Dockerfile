@@ -60,18 +60,18 @@ COPY sshd_config /etc/ssh/
 # CRON support
 # ------------------------
 RUN apt-get update -qq && apt-get -y install cron
-COPY save_wiki.py /bin/
+COPY save_wiki.py /usr/bin/
 ADD save_wiki.cron /etc/cron.daily/save_wiki
 RUN chmod 0644 /etc/cron.daily/save_wiki
 
 # ------------------------
 # Init container
 # ------------------------
-COPY init_container.sh /bin/
-COPY init_container.py /bin/
+COPY init_container.sh /usr/bin/
+COPY init_container.py /usr/bin/
 
-RUN chmod 755 /bin/init_container.sh 
+RUN chmod 755 /usr/bin/init_container.sh 
 EXPOSE 2222 $PORT
 
-CMD ["/usr/bin/python /bin/init_container.py"]
+CMD ["/usr/bin/python /usr/bin/init_container.py"]
 

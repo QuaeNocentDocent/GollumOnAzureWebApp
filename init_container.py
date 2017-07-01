@@ -41,7 +41,7 @@ if __name__ == "__main__":
         write_log('Config file specified, downloading')
         if not os.path.isdir('/home/conf'):
             os.mkdir('/home/conf')
-        os.system('az storage blob download-batch --source %s --destination /home/conf/config.rb --account-key %s' % (os.environ['GOLLUMCONF'], os.environ['GOLLUMCONF_KEY'])
+        os.system('az storage blob download-batch --source %s --destination /home/conf/config.rb --account-key %s' % (os.environ['GOLLUMCONF'], os.environ['GOLLUMCONF_KEY']))
         os.system('/gollum/bin/gollum --config /home/conf/config.rb /home/wiki')
     else:
         os.system('/gollum/bin/gollum --port %s /home/wiki' % os.environ['PORT'])

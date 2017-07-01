@@ -1,1 +1,1 @@
-00 19 * * * root /usr/bin/python /bin/save_wiki.py
+00 19 * * * root /usr/bin/python /usr/bin/save_wiki.py
