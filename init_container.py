@@ -17,7 +17,7 @@ if __name__ == "__main__":
     if os.system('service ssh start') == 0:
         write_log('ssh daemon started')
     else:
-        write_log('issues starting ssh daemon')
+        write_log('issues starting ssh daemon') 
     
     if os.system('service cron start') == 0:
         write_log('cron daemon started')
