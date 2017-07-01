@@ -11,6 +11,8 @@ ENV PORT=80
 ENV AZURE_STORAGE_KEY=""
 ENV AZURE_STORAGE_URL=""
 ENV GOLLUMCONF=""
+ENV GOLLUMCONF_KEY=""
+
 
 #Gollum prereq layer
 RUN apt-get -qq update \
@@ -40,11 +42,10 @@ RUN git checkout -b 5.x origin/5.x \
 # Azure cli2 support
 # ------------------------
 
-RUN  echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | tee /etc/apt/sources.list.d/azure-cli.list \
+RUN  apt-get update -qq && apt-get install -y apt-transport-https \
+  && echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | tee /etc/apt/sources.list.d/azure-cli.list \
   && apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893 \
-  && apt-get install -y apt-transport-https \
-  && apt-get update -qq \
-  && apt-get install -y azure-cli
+  && apt-get update -qq && apt-get install -y azure-cli
 
 # ------------------------
 # SSH Server support
@@ -56,34 +57,21 @@ RUN apt-get -qq update \
 COPY sshd_config /etc/ssh/
 
 # ------------------------
+# CRON support
+# ------------------------
+RUN apt-get update -qq && apt-get -y install cron
+COPY save_wiki.py /bin/
+ADD save_wiki.cron /etc/cron.daily/save_wiki
+RUN chmod 0644 /etc/cron.daily/save_wiki
+
+# ------------------------
 # Init container
 # ------------------------
 COPY init_container.sh /bin/
+COPY init_container.py /bin/
 
 RUN chmod 755 /bin/init_container.sh 
 EXPOSE 2222 $PORT
 
-CMD ["/bin/init_container.sh"]
+CMD ["/usr/bin/python /bin/init_container.py"]
 
-
-
-
-#CMD ["gollum", "--port", "80"]
-
-# Install dependencies
-#RUN apt-get update
-#RUN apt-get install -y -q build-essential ruby1.9.3 python python-docutils ruby-bundler libicu-dev libreadline-dev libssl-dev zlib1g-dev git-core
-#RUN apt-get clean
-#RUN rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
-
-# Install gollum
-#RUN gem install gollum redcarpet github-markdown
-
-# Initialize wiki data
-#RUN mkdir /root/wikidata
-#RUN git init /root/wikidata
-
-# Expose default gollum port 4567
-#EXPOSE 4567
-
-#ENTRYPOINT ["/usr/local/bin/gollum", "/root/wikidata"]

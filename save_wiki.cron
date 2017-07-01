@@ -1,0 +1,1 @@
+00 19 * * * root /usr/bin/python /bin/save_wiki.py
