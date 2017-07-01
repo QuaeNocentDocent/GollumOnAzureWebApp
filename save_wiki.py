@@ -3,8 +3,12 @@ import os
 import datetime
 
 def write_log(msg):
-    msg = '[%s] %s' % (datetime.datetime.now(), msg)
-    with open(log_file_name, 'a') as log:
+    msg = '[%s] %s\n' % (datetime.datetime.now(), msg)
+    if os.path.exists(log_file_name):
+        append_write = 'a'
+    else:
+        append_write = 'w'
+    with open(log_file_name, append_write) as log:
         log.write(msg)
     log.close()
 

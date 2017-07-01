@@ -1,6 +1,6 @@
 FROM ruby
 
-LABEL MAINTAINER daniele.grandni@live.it
+LABEL MAINTAINER daniele.grandini@live.it
 ENV PORT=80
 
 # Accessing Azure File Share is not yet supported as any other external storage commenting out the relevant code
@@ -58,6 +58,7 @@ COPY sshd_config /etc/ssh/
 
 # ------------------------
 # CRON support
+# here we can have a race condition with more than one node, how can I check if I there are other nodes?
 # ------------------------
 RUN apt-get update -qq && apt-get -y install cron
 COPY save_wiki.py /usr/bin/
