@@ -71,8 +71,8 @@ RUN chmod 0644 /etc/cron.daily/save_wiki
 # Just copy the binaries of the modified omniauth and build the gem
 # ------------------------
 
-COPY omniauth /omniauth/
-WORKDIR /omniauth
+COPY omnigollum /omnigollum/
+WORKDIR /omnigollum
 RUN gem build omnigollum.gemspec \
   && gem install omnigollum*.gem
 
