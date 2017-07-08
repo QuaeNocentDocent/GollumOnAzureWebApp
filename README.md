@@ -17,6 +17,10 @@ sudo docker push <registry>/gollum/gollum
 #useful doecker commands
 docker image ls
 
+docker run --name c3 --rm gollum:latest /usr/bin/python /usr/bin/init_container.py
+docker run --name c3 --rm -v /mnt/home:/home -e "WEBSITE_ROLE_INSTANCE_ID=test" gollum:latest /usr/bin/python /usr/bin/init_container.py
+
+
 #azcli2 upload / download
 az storage blob upload-batch --destination https://gollum.blob.core.windows.net/wiki --source /home/wiki --account-key <key>
 
