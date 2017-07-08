@@ -67,6 +67,16 @@ ADD save_wiki.cron /etc/cron.daily/save_wiki
 RUN chmod 0644 /etc/cron.daily/save_wiki
 
 # ------------------------
+# Ominiauth support
+# Just copy the binaries of the modified omniauth and build the gem
+# ------------------------
+
+COPY omniauth /omniauth/
+WORKDIR /omniauth
+RUN gem build omnigollum.gemspec \
+  && gem install omnigollum*.gem
+
+# ------------------------
 # Init container
 # ------------------------
 #COPY init_container.sh /usr/bin/
