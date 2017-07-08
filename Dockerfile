@@ -74,7 +74,8 @@ RUN chmod 0644 /etc/cron.daily/save_wiki
 COPY omnigollum /omnigollum/
 WORKDIR /omnigollum
 RUN gem build omnigollum.gemspec \
-  && gem install omnigollum*.gem
+  && gem install omnigollum*.gem \
+  && gem install omniauth-azure-oauth2
 
 # ------------------------
 # Init container
