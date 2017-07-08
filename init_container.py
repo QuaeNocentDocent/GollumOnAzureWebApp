@@ -50,7 +50,7 @@ if __name__ == "__main__":
         write_log('Checking for custom css and js file, downloading')
         #no error checking for this release
         os.mkdir('/home/temp')
-        os.system('az storage blob download-batch --source %s --destination /home/temp --account-key %s --pattern %s/*' % (os.environ['GOLLUMCONF'], os.environ['GOLLUMCUSTOM'], os.environ['GOLLUMCONF_KEY']))
+        os.system('az storage blob download-batch --source %s --destination /home/temp --account-key %s --pattern %s/*' % (os.environ['GOLLUMCONF'], os.environ['GOLLUMCONF_KEY'], os.environ['GOLLUMCUSTOM']))
         os.system('cp /home/temp/%s /home/wiki' % os.environ['GOLLUMCUSTOM'])
         os.rmdir('/home/temp')
         os.chdir('/home/wiki')
@@ -66,6 +66,7 @@ if __name__ == "__main__":
         if not os.path.isdir('/home/conf'):
             os.mkdir('/home/conf')
         os.system('az storage blob download-batch --source %s --destination /home/conf --account-key %s --pattern config.rb' % (os.environ['GOLLUMCONF'], os.environ['GOLLUMCONF_KEY']))
+        write_log('Ready to start gollum')
         os.system('/gollum/bin/gollum --config /home/conf/config.rb --port %s' % os.environ['PORT'])
     else:
         os.system('/gollum/bin/gollum --port %s /home/wiki' % os.environ['PORT'])
