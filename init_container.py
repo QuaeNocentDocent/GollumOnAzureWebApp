@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import os
 import datetime
+from distutils.dir_util import copy_tree
+import shutil
 
 def write_log(msg):
     msg = '[%s] %s\n' % (datetime.datetime.now(), msg)
@@ -49,10 +51,11 @@ if __name__ == "__main__":
     if os.environ['GOLLUMCUSTOM']:
         write_log('Checking for custom css and js file, downloading')
         #no error checking for this release
-        os.mkdir('/home/temp')
+        if not os.path.isdir('/home/temp'):
+            os.mkdir('/home/temp')
         os.system('az storage blob download-batch --source %s --destination /home/temp --account-key %s --pattern %s/*' % (os.environ['GOLLUMCONF'], os.environ['GOLLUMCONF_KEY'], os.environ['GOLLUMCUSTOM']))
-        os.system('cp /home/temp/%s/* /home/wiki' % os.environ['GOLLUMCUSTOM'])
-        os.rmdir('/home/temp')
+        copy_tree(('/home/temp/%s' % os.environ['GOLLUMCUSTOM']), '/home/wiki')
+        shutil.rmtree('/home/temp')
         os.chdir('/home/wiki')
         os.system('git add *')
         os.system('git commit -m ''gollum customized''')
