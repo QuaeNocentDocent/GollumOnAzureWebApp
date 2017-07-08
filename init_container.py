@@ -54,13 +54,10 @@ if __name__ == "__main__":
         os.system('cp /home/temp/%s /home/wiki' % os.environ['GOLLUMCUSTOM'])
         os.rmdir('/home/temp')
         os.chdir('/home/wiki')
-        os.system('git add /home/wiki/*')
-        os.system('git commit /home/wiki/* -m ''gollum customized''')
+        os.system('git add *')
+        os.system('git commit -m ''gollum customized''')
         #let's add omnigollum here at the moment, tI dont' know if it is worth to move it into the conatiner itself
         write_log('About to install omnigollum')
-        
-        
-
     if os.environ['GOLLUMCONF']:
         write_log('Config file specified, downloading')
         if not os.path.isdir('/home/conf'):
