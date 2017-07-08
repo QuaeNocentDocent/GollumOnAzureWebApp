@@ -58,8 +58,8 @@ if __name__ == "__main__":
         os.system('git commit /home/wiki/* -m ''gollum customized''')
         #let's add omnigollum here at the moment, tI dont' know if it is worth to move it into the conatiner itself
         write_log('About to install omnigollum')
-        # https://github.com/arr2036/omnigollum 
-        os.system('gem install omnigollum')
+        
+        
 
     if os.environ['GOLLUMCONF']:
         write_log('Config file specified, downloading')
