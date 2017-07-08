@@ -51,7 +51,7 @@ if __name__ == "__main__":
         #no error checking for this release
         os.mkdir('/home/temp')
         os.system('az storage blob download-batch --source %s --destination /home/temp --account-key %s --pattern %s/*' % (os.environ['GOLLUMCONF'], os.environ['GOLLUMCONF_KEY'], os.environ['GOLLUMCUSTOM']))
-        os.system('cp /home/temp/%s /home/wiki' % os.environ['GOLLUMCUSTOM'])
+        os.system('cp /home/temp/%s/* /home/wiki' % os.environ['GOLLUMCUSTOM'])
         os.rmdir('/home/temp')
         os.chdir('/home/wiki')
         os.system('git add *')
